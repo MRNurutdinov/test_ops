@@ -56,8 +56,11 @@ async def add_user_history(
     Returns:
         Возвращает результат запроса
     """
-    await _create_new_history_user(body, db)
-    return BaseResponseModel(status="ok")
+    try:
+        await _create_new_history_user(body, db)
+        return BaseResponseModel(status="ok")
+    except Exception:
+        raise HTTPException(status_code=400, detail="Ошибка в формате данных")
 
 
 @user_router.get("/visited_domains", response_model=VisitedDomains,
@@ -79,7 +82,7 @@ async def visited_domains(
     """
     if not page_num or page_num <= 0:
         page_num = 1
-    if not page_size or page_size <= 0:
+    if not page_size or page_size <= 0 or page_size > 100:
         page_size = 100
     try:
         history_user = await _get_history_user(from_time, to_time, page_num,
