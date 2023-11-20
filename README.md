@@ -1,5 +1,3 @@
-# Tes Sberbank XOps
-
 Для накатывания миграций, терминале команды:
 
 - ```pip install -r requirements.txt ```
